@@ -241,7 +241,7 @@ class Builder
      *
      * @return Builder
      */
-    public function git ()
+    public function returnCurlInfo()
     {
         return $this->withPackageOption('curlInfo', true);
     }
