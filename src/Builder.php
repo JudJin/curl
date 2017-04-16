@@ -33,7 +33,7 @@ class Builder
         'containsFile' => false,
         'debugFile' => '',
         'saveFile' => '',
-        'withCurlInfo' => false
+        'curlInfo' => false
     );
 
 
@@ -241,9 +241,9 @@ class Builder
      *
      * @return Builder
      */
-    public function withCurlInfo()
+    public function git ()
     {
-        return $this->withPackageOption('withCurlInfo', true);
+        return $this->withPackageOption('curlInfo', true);
     }
 
     /**
@@ -391,7 +391,7 @@ class Builder
 
             $responseData = curl_getinfo($this->curlObject);
 
-            if ($this->packageOptions['withCurlInfo']) {
+            if ($this->packageOptions['curlInfo']) {
                 $responseData['curlInfo'] = curl_getinfo($this->curlObject);
             }
 
