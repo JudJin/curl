@@ -33,7 +33,7 @@ class Builder
         'containsFile' => false,
         'debugFile' => '',
         'saveFile' => '',
-        'effectiveUrl' => false
+        'withCurlInfo' => false
     );
 
 
@@ -241,9 +241,9 @@ class Builder
      *
      * @return Builder
      */
-    public function returnEffectiveUrl()
+    public function withCurlInfo()
     {
-        return $this->withPackageOption('effectiveUrl', true);
+        return $this->withPackageOption('withCurlInfo', true);
     }
 
     /**
@@ -391,8 +391,8 @@ class Builder
 
             $responseData = curl_getinfo($this->curlObject);
 
-            if ($this->packageOptions['effectiveUrl']) {
-                $responseData['effectiveUrl'] = curl_getinfo($this->curlObject, CURLINFO_EFFECTIVE_URL);
+            if ($this->packageOptions['withCurlInfo']) {
+                $responseData['curlInfo'] = curl_getinfo($this->curlObject);
             }
 
             if (curl_errno($this->curlObject)) {
@@ -437,8 +437,12 @@ class Builder
         if (array_key_exists('errorMessage', $responseData)) {
             $object->error = $responseData['errorMessage'];
         }
-        if (array_key_exists('effectiveUrl', $responseData)) {
-            $object->effective_url = $responseData['effectiveUrl'];
+        if (array_key_exists('curlInfo', $responseData)) {
+            $object->info = new stdClass();
+
+            foreach ($responseData['curlInfo'] as $key => $value) {
+                $object->info->{$key} = $value;
+            }
         }
 
         return $object;
